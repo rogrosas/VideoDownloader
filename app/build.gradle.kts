@@ -14,8 +14,17 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-        // yt-dlp + Python + ffmpeg son binarios nativos: limitar ABIs reduce mucho el APK.
-        ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") }
+    }
+
+    // yt-dlp + Python + ffmpeg son binarios nativos (~50 MB por arquitectura): un APK por ABI
+    // en vez de uno universal. arm64-v8a sirve para casi cualquier móvil actual.
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86_64")
+            isUniversalApk = false
+        }
     }
 
     buildTypes {

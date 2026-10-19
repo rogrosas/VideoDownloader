@@ -29,9 +29,15 @@ La app **no salta ni resuelve captchas automáticamente**. Lo que hace:
 Necesitas Android Studio (Ladybug o posterior) o el Android SDK con JDK 17.
 ```
 ./gradlew assembleDebug
-# APK: app/build/outputs/apk/debug/app-debug.apk
+# APKs: app/build/outputs/apk/debug/app-<abi>-debug.apk
 ```
-El APK pesa unos 60–100 MB por los binarios de Python/ffmpeg. Para un APK por arquitectura, usa `splits { abi { … } }`.
+Se genera un APK por arquitectura (Python + ffmpeg ocupan ~50 MB cada una):
+- `arm64-v8a`: casi cualquier móvil de los últimos años. **Usa este si dudas.**
+- `armeabi-v7a`: móviles antiguos de 32 bits.
+- `x86_64`: emuladores y algunos Chromebooks.
+
+GitHub Actions compila en cada push a `main`; los APK están en *Actions → ejecución → Artifacts*.
+Con un tag `v*` (`git tag v1.0 && git push --tags`) se publican también en *Releases*.
 
 ## Limitaciones conocidas
 - **YouTube** exige desde nov. 2025 un runtime de JavaScript (Deno, Node, QuickJS…) para que yt-dlp
